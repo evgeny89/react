@@ -1,0 +1,20 @@
+.message-item {
+    margin-bottom: 10px;
+    padding: 5px 0;
+    border-bottom: 1px solid #31464f;
+}
+
+.message-item-login {
+    color: #ffee9a;
+    font-weight: bold;
+}
+
+.message-item-date {
+    font-size: 12px;
+    color: #70adb4;
+}
+
+.message-item-text {
+    color: #dccda3;
+    font-size: 16px;
+}
