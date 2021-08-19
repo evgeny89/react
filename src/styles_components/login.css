@@ -18,27 +18,3 @@
     justify-content: space-around;
     align-items: center;
 }
-
-.login-input {
-    background-color: transparent;
-    border: 1px solid #44655f;
-    border-radius: 20px;
-    outline: none;
-    padding: 20px;
-    font-size: 18px;
-    color: #fff2c4;
-}
-
-.login-button {
-    background-color: transparent;
-    font-size: 18px;
-    padding: 10px 20px;
-    border: 1px solid #44655f;
-    border-radius: 15px;
-    outline: none;
-    transition: .3s background-color;
-}
-
-.login-button:hover {
-    background-color: #6aa196;
-}

@@ -1,5 +1,6 @@
 import "../styles_components/login.css";
 import {useCallback, useState} from "react";
+import {Button, TextField} from "@material-ui/core";
 
 const Login = (props) => {
     const {login} = {...props};
@@ -10,9 +11,14 @@ const Login = (props) => {
     return (
         <div className="login">
             <div className="login-form">
-                <div>Введите имя:</div>
-                <input className="login-input" onChange={e => setName(e.target.value)}/>
-                <button className="login-button" type="button" onClick={setLogin}>login</button>
+                <TextField
+                    id="standard-basic"
+                    label="Введите имя"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    autoFocus
+                />
+                <Button onClick={setLogin} variant="contained" color="primary">сохранить</Button>
             </div>
         </div>
     );

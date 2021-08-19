@@ -4,17 +4,27 @@ import './app.css';
 import Message from "./components/Message";
 import Login from "./components/Login";
 import MessageWrapper from "./components/MessageWrapper";
+import {Grid} from "@material-ui/core";
+import ChatList from "./components/ChatList";
+
+import items from "./source/chats";
+
+// const initialList = items.reduce((acc,item) => {
+//     acc[item.id] = [];
+//     return acc;
+// }, {});
 
 function App() {
 
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(initialList);
     const [login, setLogin] = useState('');
+    const [selectedItem, setSelectedItem] = useState(1);
 
     useEffect(() => {
         const getLastMessageAuthor = () => {
-            if (messages.length > 0) {
-                const lastIndex = messages.length - 1;
-                return messages[lastIndex].login;
+            if (messages[selectedItem].length > 0) {
+                const lastIndex = messages[selectedItem].length - 1;
+                return messages[selectedItem][lastIndex].login;
             }
             return 'Bot';
         }
@@ -32,7 +42,8 @@ function App() {
                 message: lastMessageAuthor + ', твое сообщение добавлено',
                 date: Date.now()
             }
-            return [...prev, message];
+            prev[selectedItem] = [...prev[selectedItem], message]
+            return prev;
         });
     }
 
@@ -41,8 +52,15 @@ function App() {
             {login.length === 0
                 ? <Login login={setLogin}/>
                 : <>
-                    <MessageWrapper messages={messages}/>
-                    <Message login={login} save={setMessages}/>
+                    <Grid container spacing={3}>
+                        <Grid item xs={3}>
+                            <ChatList selectedItem={selectedItem} setSelectedItem={setSelectedItem}/>
+                        </Grid>
+                        <Grid  item xs={9}>
+                            <MessageWrapper messages={messages} chat={selectedItem}/>
+                            <Message login={login} save={setMessages} chat={selectedItem}/>
+                        </Grid>
+                    </Grid>
                 </>
             }
         </div>

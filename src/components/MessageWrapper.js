@@ -12,13 +12,10 @@ const MessageWrapper = (props) => {
 
     useEffect(scrollToBottom, [props.messages])
     return (
-        <>
-            <div className="message-wrapper">
-                <MessageList messages={props.messages}/>
-                <div ref={scrollRef} />
-            </div>
-        </>
-
+        <div className="message-wrapper">
+            <MessageList messages={props.messages} chat={props.chat}/>
+            <div ref={scrollRef}/>
+        </div>
     );
 }
 
