@@ -8,20 +8,6 @@
     background-color: #3d5864;
     color: #fff2c4;
     min-height: 100vh;
-    padding: 20px calc(50% - 600px);
+    padding: 20px calc(50% - 400px);
     font-size: 18px;
-}
-
-.input {
-    padding: 10px;
-    background-color: #3d5864;
-    color: #fff2c4;
-    outline: none;
-    border-radius: 5px;
-    border: 2px solid #3a4e59;
-    transition: .3s border-color;
-}
-.input:hover,
-.input:focus {
-    border-color: #fff2c4;
 }
