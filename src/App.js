@@ -9,22 +9,35 @@ import ChatList from "./components/ChatList";
 
 import items from "./source/chats";
 
-// const initialList = items.reduce((acc,item) => {
-//     acc[item.id] = [];
-//     return acc;
-// }, {});
+const initialList = items.reduce((acc,item) => {
+    acc[item.id] = [];
+    return acc;
+}, {});
 
 function App() {
 
     const [messages, setMessages] = useState(initialList);
     const [login, setLogin] = useState('');
-    const [selectedItem, setSelectedItem] = useState(1);
+    const [selectedChat, setSelectedChat] = useState(1);
 
     useEffect(() => {
+        const writeBot = (lastMessageAuthor) => {
+            const message = {
+                login: 'Bot',
+                message: lastMessageAuthor + ', твое сообщение добавлено',
+                date: Date.now()
+            }
+
+            setMessages((prev) => ({
+                ...prev,
+                [selectedChat]: [...prev[selectedChat], message]
+            }));
+        }
+        
         const getLastMessageAuthor = () => {
-            if (messages[selectedItem].length > 0) {
-                const lastIndex = messages[selectedItem].length - 1;
-                return messages[selectedItem][lastIndex].login;
+            if (messages[selectedChat].length > 0) {
+                const lastIndex = messages[selectedChat].length - 1;
+                return messages[selectedChat][lastIndex].login;
             }
             return 'Bot';
         }
@@ -33,19 +46,7 @@ function App() {
         if (lastMessageAuthor !== 'Bot') {
             setTimeout(writeBot, 1000, lastMessageAuthor);
         }
-    }, [messages]);
-
-    const writeBot = (lastMessageAuthor) => {
-        setMessages((prev) => {
-            const message = {
-                login: 'Bot',
-                message: lastMessageAuthor + ', твое сообщение добавлено',
-                date: Date.now()
-            }
-            prev[selectedItem] = [...prev[selectedItem], message]
-            return prev;
-        });
-    }
+    }, [messages, selectedChat, setMessages]);
 
     return (
         <div className="app">
@@ -54,11 +55,11 @@ function App() {
                 : <>
                     <Grid container spacing={3}>
                         <Grid item xs={3}>
-                            <ChatList selectedItem={selectedItem} setSelectedItem={setSelectedItem}/>
+                            <ChatList selectedItem={selectedChat} setSelectedItem={setSelectedChat}/>
                         </Grid>
                         <Grid  item xs={9}>
-                            <MessageWrapper messages={messages} chat={selectedItem}/>
-                            <Message login={login} save={setMessages} chat={selectedItem}/>
+                            <MessageWrapper messages={messages} chat={selectedChat}/>
+                            <Message login={login} save={setMessages} chat={selectedChat}/>
                         </Grid>
                     </Grid>
                 </>

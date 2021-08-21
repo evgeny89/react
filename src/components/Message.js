@@ -4,12 +4,12 @@ import {TextField, Button} from "@material-ui/core";
 
 const Message = (props) => {
     const {save, login, chat} = {...props};
-
+    const [message, setMessage] = useState('');
     const inputRef = useRef(null);
+
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
-    const [message, setMessage] = useState('');
     const saveMessage = useCallback(() => {
         let currentMessage = message.trim();
 
@@ -20,10 +20,10 @@ const Message = (props) => {
                 date: Date.now()
             }
 
-            save((prev) => {
-                prev[chat] = [...prev[chat], post]
-                return prev;
-            });
+            save((prev) => ({
+                ...prev,
+                [chat]: [...prev[chat], post]
+            }));
         }
         setMessage('');
     }, [message, login, save, chat]);
