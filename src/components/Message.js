@@ -1,14 +1,15 @@
 import '../styles_components/message.css';
 import {useCallback, useEffect, useRef, useState} from "react";
+import {TextField, Button} from "@material-ui/core";
 
 const Message = (props) => {
-    const {save, login} = {...props};
-
-    const inputRef = useRef(null);
-    useEffect(() => {
-        inputRef.current.focus();
-    }, []);
+    const {save, login, chat} = {...props};
     const [message, setMessage] = useState('');
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        inputRef.current?.focus();
+    }, []);
     const saveMessage = useCallback(() => {
         let currentMessage = message.trim();
 
@@ -19,12 +20,13 @@ const Message = (props) => {
                 date: Date.now()
             }
 
-            save((prev) => {
-                return [...prev, post];
-            });
+            save((prev) => ({
+                ...prev,
+                [chat]: [...prev[chat], post]
+            }));
         }
         setMessage('');
-    }, [message, login, save]);
+    }, [message, login, save, chat]);
 
     const saveOnEnter = (e) => {
         if (e.key === 'Enter') {
@@ -34,8 +36,16 @@ const Message = (props) => {
 
     return (
         <div className="message" onKeyPress={saveOnEnter}>
-            <input value={message} className="message-input" onChange={e => setMessage(e.target.value)} ref={inputRef}/>
-            <button className="message-btn" onClick={saveMessage}>отправить</button>
+            <TextField
+                id="standard-basic"
+                label="Сообщение"
+                className="message-input"
+                value={message}
+                onChange={e => setMessage(e.target.value)}
+                ref={inputRef}
+                autoFocus
+            />
+            <Button className="message-btn" onClick={saveMessage} variant="contained" color="primary">отправить</Button>
         </div>
     );
 }
