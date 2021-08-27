@@ -1,7 +1,7 @@
 import Login from "./Login";
 
-const Profile = (props) => {
-    return (<Login {...props}/>);
+const Profile = () => {
+    return (<Login />);
 }
 
 export default Profile;

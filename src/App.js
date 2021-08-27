@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import {Provider} from "react-redux";
+import store from './source/store';
 import './app.css';
 
 import Rute from "./components/Rute";
@@ -13,7 +15,6 @@ const initialList = items.reduce((acc, item) => {
 function App() {
 
     const [messages, setMessages] = useState(initialList);
-    const [login, setLogin] = useState('Guest');
     const [selectedChat, setSelectedChat] = useState(1);
 
     useEffect(() => {
@@ -46,13 +47,13 @@ function App() {
 
     return (
         <div className="app">
-            <Rute selectedChat={selectedChat}
-                  setSelectedChat={setSelectedChat}
-                  messages={messages}
-                  login={login}
-                  setLogin={setLogin}
-                  setMessages={setMessages}
-            />
+            <Provider store={store}>
+                <Rute selectedChat={selectedChat}
+                      setSelectedChat={setSelectedChat}
+                      messages={messages}
+                      setMessages={setMessages}
+                />
+            </Provider>
         </div>
     );
 }

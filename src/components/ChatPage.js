@@ -6,7 +6,7 @@ import React from "react";
 import '../styles_components/chats.css';
 
 const ChatPage = (props) => {
-    const {selectedChat, setSelectedChat, messages, login, setMessages} = {...props};
+    const {selectedChat, setSelectedChat, messages, setMessages} = {...props};
 
     return (<div className="chats">
         <Grid container spacing={3}>
@@ -15,7 +15,7 @@ const ChatPage = (props) => {
             </Grid>
             <Grid  item xs={9}>
                 <MessageWrapper messages={messages} chat={selectedChat}/>
-                <Message login={login} save={setMessages} chat={selectedChat}/>
+                <Message save={setMessages} chat={selectedChat}/>
             </Grid>
         </Grid>
     </div>);
