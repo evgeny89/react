@@ -2,18 +2,20 @@ import '../styles_components/message.css';
 import {useCallback, useEffect, useRef, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {incrementCountMessages} from '../source/userSlice';
+import {addMessages} from '../source/messageSlice';
 import {TextField, Button} from "@material-ui/core";
 
-const Message = (props) => {
-    const {save, chat} = {...props};
+const Message = () => {
     const login = useSelector(state => state.user.name);
     const dispatch = useDispatch();
+
     const [message, setMessage] = useState('');
     const inputRef = useRef(null);
 
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
+
     const saveMessage = useCallback(() => {
         let currentMessage = message.trim();
 
@@ -24,15 +26,11 @@ const Message = (props) => {
                 date: Date.now()
             }
 
-            save((prev) => ({
-                ...prev,
-                [chat]: [...prev[chat], post]
-            }));
-
+            dispatch(addMessages(post));
             dispatch(incrementCountMessages());
         }
         setMessage('');
-    }, [message, login, save, chat, dispatch]);
+    }, [message, login, dispatch]);
 
     const saveOnEnter = (e) => {
         if (e.key === 'Enter') {

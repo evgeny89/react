@@ -1,18 +1,25 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {MenuItem, MenuList, Paper} from "@material-ui/core";
-import items from "../source/chats";
+import { useSelector, useDispatch } from 'react-redux';
+import {setSelectedChat} from "../source/messageSlice";
 
-const ChatList = (props) => {
-    const {selectedItem, setSelectedItem} = {...props};
+const ChatList = () => {
+    const chats = useSelector(state => state.messages.chats);
+    const selectedCat = useSelector(state => state.messages.selectedChat)
+    const dispatch = useDispatch();
+
+    const selectChat = useCallback((chatId) => {
+        dispatch(setSelectedChat(chatId));
+    }, [dispatch]);
 
     return (
         <Paper>
             <MenuList>
-                {items.map(item => (
+                {chats.map(item => (
                     <MenuItem
                         key={item.id}
-                        selected={selectedItem === item.id}
-                        onClick={() => setSelectedItem(item.id)}
+                        selected={selectedCat === item.id}
+                        onClick={() => selectChat(item.id)}
                     >{item.name}</MenuItem>
                 ))}
             </MenuList>
