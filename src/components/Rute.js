@@ -23,10 +23,10 @@ const Rute = (props) => {
             </AppBar>
             <Switch>
                 <Route exact path="/">
-                    <Home {...props}/>
+                    <Home />
                 </Route>
                 <Route exact path="/profile">
-                    <Profile {...props}/>
+                    <Profile />
                 </Route>
                 <Route exact path="/chats">
                     <ChatPage {...props}/>
