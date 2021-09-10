@@ -5,14 +5,14 @@ import {persistStore} from "redux-persist";
 import store from './source/store';
 import './app.css';
 
-import Rute from "./components/Rute";
+import RouteList from "./components/RouteList";
 
 function App() {
     return (
         <div className="app">
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistStore(store)}>
-                    <Rute />
+                    <RouteList />
                 </PersistGate>
             </Provider>
         </div>
