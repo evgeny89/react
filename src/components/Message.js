@@ -1,5 +1,5 @@
 import '../styles_components/message.css';
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {incrementCountMessages} from '../source/userSlice';
 import {addMessages} from '../source/messageSlice';
@@ -16,7 +16,19 @@ const Message = () => {
         inputRef.current?.focus();
     }, []);
 
-    const saveMessage = useCallback(() => {
+    const saveMessageWithThunk = (message) => (dispatch) => {
+        dispatch(addMessages(message));
+        setTimeout(() => {
+            const botMessage = {
+                login: 'Bot',
+                message: login + ', твое сообщение добавлено',
+                date: Date.now()
+            }
+            dispatch(addMessages(botMessage))
+        }, 500);
+    }
+
+    const saveMessage = () => {
         let currentMessage = message.trim();
 
         if (currentMessage) {
@@ -26,11 +38,11 @@ const Message = () => {
                 date: Date.now()
             }
 
-            dispatch(addMessages(post));
+            dispatch(saveMessageWithThunk(post));
             dispatch(incrementCountMessages());
         }
         setMessage('');
-    }, [message, login, dispatch]);
+    };
 
     const saveOnEnter = (e) => {
         if (e.key === 'Enter') {
