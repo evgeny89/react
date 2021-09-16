@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {setSelectedChat} from "../source/messageSlice";
 
 const ChatList = () => {
-    const chats = useSelector(state => state.messages.chats);
-    const selectedCat = useSelector(state => state.messages.selectedChat)
+    const {chats, selectedCat} = useSelector(state => state.messages);
     const dispatch = useDispatch();
 
     const selectChat = useCallback((chatId) => {

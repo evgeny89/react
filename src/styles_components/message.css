@@ -10,6 +10,10 @@
     padding: 5px;
 }
 
+.message-input input {
+    color: #fff2c4;
+}
+
 .message-btn {
     padding: 5px;
     margin-left: 20px;

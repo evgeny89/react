@@ -1,40 +1,16 @@
-import "../styles_components/login.css";
-import {useCallback, useState} from "react";
-import {Button, TextField} from "@material-ui/core";
-import { useSelector, useDispatch } from 'react-redux';
-import {setLogin} from "../source/userSlice";
+import {useDispatch} from "react-redux";
+import {change} from "../source/userSlice";
+import {Button} from "@material-ui/core";
+import {useHistory} from "react-router-dom";
 
 const Login = () => {
-    const login = useSelector(state => state.user.name);
-    const countMessage = useSelector(state => state.user.countMessage);
     const dispatch = useDispatch();
-
-    const [name, setName] = useState('');
-    const saveLogin = useCallback(() => {
-        dispatch(setLogin(name));
-        setName('');
-    }, [name, setName, dispatch]);
-
-    return (
-        <>
-            <div className='login-header'>
-                <span>текущее имя: {login}</span>
-            </div>
-            <div className='login-header'>
-                <span>всего сообщений: {countMessage}</span>
-            </div>
-            <div className="login-form">
-            <TextField
-                id="standard-basic"
-                label="Изменить имя"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                autoFocus
-            />
-            <Button onClick={saveLogin} variant="contained" color="primary">сохранить</Button>
-        </div>
-        </>
-    );
+    const routeHistory = useHistory();
+    const changeAuth = () => {
+        dispatch(change());
+        routeHistory.push("/profile")
+    }
+    return (<div><Button onClick={changeAuth} variant="contained" color="primary">LogInOut</Button></div>)
 }
 
 export default Login;
