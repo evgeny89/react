@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {setSelectedChat} from "../source/messageSlice";
 
 const ChatList = () => {
-    const {chats, selectedCat} = useSelector(state => state.messages);
+    const {chats, selectedChat} = useSelector(state => state.messages);
     const dispatch = useDispatch();
 
     const selectChat = useCallback((chatId) => {
@@ -17,7 +17,7 @@ const ChatList = () => {
                 {chats.map(item => (
                     <MenuItem
                         key={item.id}
-                        selected={selectedCat === item.id}
+                        selected={selectedChat === item.id}
                         onClick={() => selectChat(item.id)}
                     >{item.name}</MenuItem>
                 ))}

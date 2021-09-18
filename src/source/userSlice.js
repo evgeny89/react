@@ -14,8 +14,8 @@ export const userSlice = createSlice({
         incrementCountMessages: state => {
             state.countMessage += 1
         },
-        change: state => {
-            state.isAuth = !state.isAuth
+        change: (state, action) => {
+            state.isAuth = action.payload
         }
     }
 })

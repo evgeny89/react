@@ -3,36 +3,18 @@ import {createSlice} from '@reduxjs/toolkit'
 export const messageSlice = createSlice({
     name: 'messages',
     initialState: {
-        messages: {},
-        chats: [
-            {
-                id: 1,
-                name: "Общий",
-            },
-            {
-                id: 2,
-                name: "Backend",
-            },
-            {
-                id: 3,
-                name: "Frontend",
-            }
-        ],
+        chats: [],
         selectedChat: 1,
     },
     reducers: {
-        addMessages: (state, action) => {
-            if (state.messages[state.selectedChat]) {
-                state.messages = {
-                    ...state.messages,
-                    [state.selectedChat]: [...state.messages[state.selectedChat].slice(-19), action.payload]
-                }
-            } else {
-                state.messages = {
-                    ...state.messages,
-                    [state.selectedChat]: [action.payload]
-                }
-            }
+        setChats: (state, action) => {
+            state.chats = [...action.payload];
+        },
+        resetChats: (state) => {
+            state.chats = [];
+        },
+        loadMessages: (state, action) => {
+            state.messages = action.payload;
         },
         setSelectedChat: (state, action) => {
             state.selectedChat = action.payload
@@ -40,6 +22,6 @@ export const messageSlice = createSlice({
     }
 })
 
-export const { addMessages, setSelectedChat } = messageSlice.actions
+export const { setSelectedChat, setChats, resetChats, loadMessages } = messageSlice.actions
 
 export default messageSlice.reducer

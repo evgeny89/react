@@ -2,12 +2,17 @@ import '../styles_components/message.css';
 import {useEffect, useRef, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {incrementCountMessages} from '../source/userSlice';
-import {addMessages} from '../source/messageSlice';
 import {TextField, Button} from "@material-ui/core";
+import { getDatabase, ref, push, set } from "firebase/database";
 
 const Message = () => {
     const login = useSelector(state => state.user.name);
+    const {selectedChat} = useSelector(state => state.messages);
     const dispatch = useDispatch();
+    const db = getDatabase();
+    const chatRef = ref(db, 'messages/' + selectedChat);
+    const newPostRef = push(chatRef);
+
 
     const [message, setMessage] = useState('');
     const inputRef = useRef(null);
@@ -15,18 +20,6 @@ const Message = () => {
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
-
-    const saveMessageWithThunk = (message) => (dispatch) => {
-        dispatch(addMessages(message));
-        setTimeout(() => {
-            const botMessage = {
-                login: 'Bot',
-                message: login + ', твое сообщение добавлено',
-                date: Date.now()
-            }
-            dispatch(addMessages(botMessage))
-        }, 500);
-    }
 
     const saveMessage = () => {
         let currentMessage = message.trim();
@@ -37,8 +30,7 @@ const Message = () => {
                 message: currentMessage,
                 date: Date.now()
             }
-
-            dispatch(saveMessageWithThunk(post));
+            set(newPostRef, post);
             dispatch(incrementCountMessages());
         }
         setMessage('');
