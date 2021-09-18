@@ -1,20 +1,34 @@
 import '../styles_components/message.css';
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import {incrementCountMessages} from '../source/userSlice';
+import {addMessages} from '../source/messageSlice';
 import {TextField, Button} from "@material-ui/core";
 
-const Message = (props) => {
-    const {save, chat} = {...props};
+const Message = () => {
     const login = useSelector(state => state.user.name);
     const dispatch = useDispatch();
+
     const [message, setMessage] = useState('');
     const inputRef = useRef(null);
 
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
-    const saveMessage = useCallback(() => {
+
+    const saveMessageWithThunk = (message) => (dispatch) => {
+        dispatch(addMessages(message));
+        setTimeout(() => {
+            const botMessage = {
+                login: 'Bot',
+                message: login + ', твое сообщение добавлено',
+                date: Date.now()
+            }
+            dispatch(addMessages(botMessage))
+        }, 500);
+    }
+
+    const saveMessage = () => {
         let currentMessage = message.trim();
 
         if (currentMessage) {
@@ -24,15 +38,11 @@ const Message = (props) => {
                 date: Date.now()
             }
 
-            save((prev) => ({
-                ...prev,
-                [chat]: [...prev[chat], post]
-            }));
-
+            dispatch(saveMessageWithThunk(post));
             dispatch(incrementCountMessages());
         }
         setMessage('');
-    }, [message, login, save, chat, dispatch]);
+    };
 
     const saveOnEnter = (e) => {
         if (e.key === 'Enter') {

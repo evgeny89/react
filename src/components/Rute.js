@@ -1,23 +1,39 @@
-import {BrowserRouter, Route, Switch, Link} from "react-router-dom";
-import {AppBar, Button, Toolbar, Typography} from "@material-ui/core";
+import {BrowserRouter, Route, Switch, NavLink} from "react-router-dom";
+import {AppBar, Button, makeStyles, Toolbar, Typography} from "@material-ui/core";
 
 import ChatPage from "./ChatPage";
 import Profile from "./Profile";
 import Home from "./Home";
 
-const Rute = (props) => {
+const useStyles = makeStyles({
+    root: {
+        color: '#7699a2',
+    },
+    active: {
+        color: '#fff',
+    }
+})
+
+const Rute = () => {
+    const classes = useStyles();
     return (
         <BrowserRouter>
             <AppBar position="static" className="header">
                 <Toolbar>
                     <Typography variant="h6">
-                        <Button><Link to="/">Home</Link></Button>
+                        <Button>
+                            <NavLink exact to="/" style={{ textDecoration: 'none' }} className={classes.root} activeClassName={classes.active}>Home</NavLink>
+                        </Button>
                     </Typography>
                     <Typography variant="h6">
-                        <Button><Link to="/chats">Chats</Link></Button>
+                        <Button>
+                            <NavLink to="/chats" style={{ textDecoration: 'none' }} className={classes.root} activeClassName={classes.active}>Chats</NavLink>
+                        </Button>
                     </Typography>
                     <Typography variant="h6">
-                        <Button><Link to="/profile">Profile</Link></Button>
+                        <Button>
+                            <NavLink to="/profile" style={{ textDecoration: 'none' }} className={classes.root} activeClassName={classes.active}>Profile</NavLink>
+                        </Button>
                     </Typography>
                 </Toolbar>
             </AppBar>
@@ -29,7 +45,7 @@ const Rute = (props) => {
                     <Profile />
                 </Route>
                 <Route exact path="/chats">
-                    <ChatPage {...props}/>
+                    <ChatPage/>
                 </Route>
                 <Route>
                     <h3>Page not found</h3>

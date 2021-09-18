@@ -5,17 +5,15 @@ import Message from "./Message";
 import React from "react";
 import '../styles_components/chats.css';
 
-const ChatPage = (props) => {
-    const {selectedChat, setSelectedChat, messages, setMessages} = {...props};
-
+const ChatPage = () => {
     return (<div className="chats">
         <Grid container spacing={3}>
             <Grid item xs={3}>
-                <ChatList selectedItem={selectedChat} setSelectedItem={setSelectedChat}/>
+                <ChatList />
             </Grid>
             <Grid  item xs={9}>
-                <MessageWrapper messages={messages} chat={selectedChat}/>
-                <Message save={setMessages} chat={selectedChat}/>
+                <MessageWrapper />
+                <Message />
             </Grid>
         </Grid>
     </div>);

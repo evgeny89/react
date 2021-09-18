@@ -2,18 +2,21 @@ import "../styles_components/message-wrapper.css";
 
 import MessageList from "./MessageList";
 import {useEffect, useRef} from "react";
+import {useSelector} from "react-redux";
 
-const MessageWrapper = (props) => {
+const MessageWrapper = () => {
+    const messages = useSelector(state => state.messages.messages)
+    const selectedChat = useSelector(state => state.messages.selectedChat)
     const scrollRef = useRef(null);
 
     const scrollToBottom = () => {
         scrollRef.current?.scrollIntoView({behavior: "smooth"})
     }
 
-    useEffect(scrollToBottom, [props.messages])
+    useEffect(scrollToBottom, [messages, selectedChat])
     return (
         <div className="message-wrapper">
-            <MessageList messages={props.messages} chat={props.chat}/>
+            <MessageList />
             <div ref={scrollRef}/>
         </div>
     );
