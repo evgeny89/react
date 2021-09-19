@@ -9,13 +9,15 @@ export const userSlice = createSlice({
     },
     reducers: {
         setLogin: (state, action) => {
-            state.name = action.payload
+            if (action.payload) {
+                state.name = action.payload
+            }
         },
         incrementCountMessages: state => {
             state.countMessage += 1
         },
         change: (state, action) => {
-            state.isAuth = action.payload
+            state.isAuth = action.payload ?? false
         }
     }
 })

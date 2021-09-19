@@ -6,7 +6,7 @@ import {change, setLogin} from "../source/userSlice";
 import {Box, Button, Divider, List, ListItem, TextField, Typography} from "@material-ui/core";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 
-const LogInOut = ({typeFirebase, button}) => {
+const LogInOut = ({typeFirebase = false, button = "Login"}) => {
     const auth = getAuth();
     const db = getDatabase();
     const routeHistory = useHistory();
