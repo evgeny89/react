@@ -2,7 +2,7 @@ import "../styles_components/random-gif.css";
 import {useSelector, useDispatch} from "react-redux";
 import { setUrlGif, setLoading, setError } from "../source/randomGifSlice";
 import {Box, Button, CircularProgress} from "@material-ui/core";
-import {useEffect} from "react";
+import {useCallback, useEffect} from "react";
 
 const getNewGif = () => async (dispatch, getState) => {
     dispatch(setError(false))
@@ -27,20 +27,20 @@ const RandomGif = () => {
     const {urlGif, isLoading, isError} = useSelector(state => state.random);
     const dispatch = useDispatch();
 
-    const clickListener = () => {
+    const clickListener = useCallback(() => {
         dispatch(getNewGif());
-    }
+    }, [dispatch]);
 
     useEffect(() => {
         if (!urlGif) {
             clickListener();
         }
-    }, []);
+    }, [clickListener, urlGif]);
 
     return (<div className="image-container">
                 <Box className="image-wrapper">
                     {isError && <p>ошибка загрузки, повторите попытку</p>}
-                    {isLoading && !isError && <CircularProgress color="info.main"/>}
+                    {isLoading && !isError && <CircularProgress color="primary"/>}
                     {!isLoading && urlGif && !isError && <img src={urlGif} alt="gif" className="random-image"/>}
                 </Box>
                 <div className="image-footer">

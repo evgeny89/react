@@ -1,10 +1,20 @@
+import {useEffect} from "react";
 import {BrowserRouter, Route, Switch, NavLink} from "react-router-dom";
 import {AppBar, Button, makeStyles, Toolbar, Typography} from "@material-ui/core";
+import {useDispatch, useSelector} from "react-redux";
+import {getAuth, onAuthStateChanged} from "firebase/auth";
+import {getDatabase, onValue, ref} from "firebase/database";
+import {change} from "../source/userSlice";
+import {resetChats, setChats} from "../source/messageSlice";
 
+import SecureRoute from "./SecureRoute";
 import ChatPage from "./ChatPage";
 import Profile from "./Profile";
 import RandomGif from "./RandomGif";
 import Home from "./Home";
+import Login from "./Login";
+import Signup from "./Signup";
+
 
 const useStyles = makeStyles({
     root: {
@@ -17,6 +27,36 @@ const useStyles = makeStyles({
 
 const RouteList = () => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const auth = getAuth();
+    const db = getDatabase();
+
+    const setStoreFirebaseData = (user = null) => (dispatch) => {
+        if (user) {
+            dispatch(change(user.uid));
+            const chats = ref(db, 'chats/');
+            onValue(chats, (snapshot) => {
+                const data = snapshot.val();
+                dispatch(setChats(data))
+            });
+        } else {
+            dispatch(resetChats());
+            dispatch(change(false));
+        }
+
+    }
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                dispatch(setStoreFirebaseData(user));
+            } else {
+                dispatch(setStoreFirebaseData());
+            }
+        });
+    }, [auth, dispatch])
+
+    const {isAuth} = useSelector(state => state.user);
     return (
         <BrowserRouter>
             <AppBar position="static" className="header">
@@ -33,7 +73,10 @@ const RouteList = () => {
                     </Typography>
                     <Typography variant="h6">
                         <Button>
-                            <NavLink to="/profile" style={{ textDecoration: 'none' }} className={classes.root} activeClassName={classes.active}>Profile</NavLink>
+                            {isAuth
+                                ? <NavLink to="/profile" style={{ textDecoration: 'none' }} className={classes.root} activeClassName={classes.active}>Profile</NavLink>
+                                : <NavLink to="/login" style={{ textDecoration: 'none' }} className={classes.root} activeClassName={classes.active}>LogIn</NavLink>
+                            }
                         </Button>
                     </Typography>
                     <Typography variant="h6">
@@ -47,12 +90,18 @@ const RouteList = () => {
                 <Route exact path="/">
                     <Home />
                 </Route>
-                <Route exact path="/profile">
+                <SecureRoute exact secured path="/profile">
                     <Profile />
-                </Route>
-                <Route exact path="/chats">
+                </SecureRoute>
+                <SecureRoute exact path="/login">
+                    <Login />
+                </SecureRoute>
+                <SecureRoute exact path="/signup">
+                    <Signup />
+                </SecureRoute>
+                <SecureRoute exact secured path="/chats">
                     <ChatPage/>
-                </Route>
+                </SecureRoute>
                 <Route exact path="/gifs">
                     <RandomGif />
                 </Route>

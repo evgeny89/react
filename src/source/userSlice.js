@@ -5,6 +5,7 @@ export const userSlice = createSlice({
     initialState: {
         name: "Guest",
         countMessage: 0,
+        isAuth: false,
     },
     reducers: {
         setLogin: (state, action) => {
@@ -12,10 +13,13 @@ export const userSlice = createSlice({
         },
         incrementCountMessages: state => {
             state.countMessage += 1
+        },
+        change: (state, action) => {
+            state.isAuth = action.payload
         }
     }
 })
 
-export const { setLogin, incrementCountMessages } = userSlice.actions
+export const { setLogin, incrementCountMessages, change } = userSlice.actions
 
 export default userSlice.reducer
