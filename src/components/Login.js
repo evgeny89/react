@@ -1,7 +1,7 @@
 import LogInOut from "./LogInOut";
 
 const Login = () => {
-    return <LogInOut typeFirebase={false} button="Login"/>
+    return <LogInOut />
 }
 
 export default Login;
